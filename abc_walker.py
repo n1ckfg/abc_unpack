@@ -6,6 +6,7 @@ for root, dirs, files in os.walk("."):
     path = root.split(os.sep)
     print((len(path) - 1) * '---', os.path.basename(root))
     for file in files:
-        print(len(path) * '---', file)
+        os.system("mv *.obj ..")
+        #print(len(path) * '---', file)
 
 # Archive('data.7z').extractall("<output path>")
