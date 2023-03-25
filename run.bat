@@ -2,7 +2,7 @@
 
 cd %~dp0
 
-python abc_walker.py -- %1
+python abc_walker.py -- "input"
 
 @pause
 

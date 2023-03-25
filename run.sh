@@ -10,5 +10,5 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 cd $DIR
 
-python abc_walker.py -- "test"
+python abc_walker.py -- "input"
 

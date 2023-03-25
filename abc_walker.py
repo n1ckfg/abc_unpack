@@ -1,28 +1,24 @@
 import os
-from pyunpack import Archive
-import subprocess
 import sys
+import pymeshlab as ml
 
 argv = sys.argv
 argv = argv[argv.index("--") + 1:] # get all args after "--"
 
 inputPath = argv[0]
 
-def runCmd(cmd):
+def changeExtension(_url, _newExt):
     returns = ""
-    try:
-        returns = subprocess.check_output(cmd, text=True)
-    except subprocess.CalledProcessError as e:
-        returns = f"Command failed with return code {e.returncode}"
-    print(returns)
-    return returns   
+    returnsPathArray = _url.split(".")
+    for i in range(0, len(returnsPathArray)-1):
+        returns += returnsPathArray[i]
+    returns += _newExt
+    return returns
 
-# traverse root directory, and list directories as dirs and files as files
 for root, dirs, files in os.walk(inputPath):
-    path = root.split(os.sep)
-    print((len(path) - 1) * '---', os.path.basename(root))
     for file in files:
-        runCmd(["mv", "*.obj", ".."])
-        print(len(path) * '---', file)
-
-# Archive('data.7z').extractall("<output path>")
+        inputUrl = os.path.join(inputPath, file)
+        outputUrl = changeExtension(inputUrl, ".ply")
+        ms = ml.MeshSet()
+        ms.load_new_mesh(inputUrl)
+        ms.save_current_mesh(outputUrl)        
