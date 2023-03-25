@@ -17,8 +17,9 @@ def changeExtension(_url, _newExt):
 
 for root, dirs, files in os.walk(inputPath):
     for file in files:
-        inputUrl = os.path.join(inputPath, file)
-        outputUrl = changeExtension(inputUrl, ".ply")
-        ms = ml.MeshSet()
-        ms.load_new_mesh(inputUrl)
-        ms.save_current_mesh(outputUrl)        
+        if (file.endswith("obj")):
+            inputUrl = os.path.join(inputPath, file)
+            outputUrl = changeExtension(inputUrl, ".ply")
+            ms = ml.MeshSet()
+            ms.load_new_mesh(inputUrl)
+            ms.save_current_mesh(outputUrl)        
