@@ -7,6 +7,7 @@ argv = sys.argv
 argv = argv[argv.index("--") + 1:] # get all args after "--"
 
 inputPath = argv[0]
+destPath = argv[1]
 
 def runCmd(cmd):
     returns = ""
@@ -27,11 +28,19 @@ def changeExtension(_url, _newExt):
     returns += _newExt
     return returns
 
+tiltdirs = []
+
 for root, dirs, files in os.walk(inputPath):
+    '''
     for file in files:
         if (file.endswith("obj")):
             inputUrl = os.path.join(inputPath, file)
             outputUrl = changeExtension(inputUrl, ".ply")
             ms = ml.MeshSet()
             ms.load_new_mesh(inputUrl)
-            ms.save_current_mesh(outputUrl)        
+            ms.save_current_mesh(outputUrl)    
+    '''
+    if "TILT" in dirs:
+        print(root)
+        runCmd(["mv", root, destPath])
+
