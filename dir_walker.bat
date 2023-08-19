@@ -2,7 +2,7 @@
 
 cd %~dp0
 
-python dir_walker.py -- "input" "input_tilt"
+python dir_walker.py -- "assets" "assets_tilt"
 
 @pause
 
