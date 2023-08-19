@@ -1,23 +1,11 @@
 import os
 import sys
 import pymeshlab as ml
-import subprocess
 
 argv = sys.argv
 argv = argv[argv.index("--") + 1:] # get all args after "--"
 
 inputPath = argv[0]
-
-def runCmd(cmd):
-    returns = ""
-    try:
-        returns = subprocess.check_output(cmd, text=True)
-    except subprocess.CalledProcessError as e:
-        returns = f"Command failed with return code {e.returncode}"
-    print(returns)
-    return returns   
-
-#runCmd(["command", "arg1", "arg2"])
 
 def changeExtension(_url, _newExt):
     returns = ""
