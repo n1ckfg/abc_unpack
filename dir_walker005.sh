@@ -10,5 +10,5 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 cd $DIR
 
-python dir_walker3.py -- "assets_tilt_cc"
+python dir_walker005.py -- "assets_tilt_cc"
 
