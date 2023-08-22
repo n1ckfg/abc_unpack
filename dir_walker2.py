@@ -42,8 +42,17 @@ for root, dirs, files in os.walk(inputPath):
             ms.save_current_mesh(outputUrl)    
     '''
     if "TILT" in dirs:
-        with open(os.path.combine(root, "data.json")) as data_file:    
+        doMove = False
+        
+        with open(os.path.join(root, "data.json")) as data_file:    
             data = json.load(data_file)
-            print(data["license"])
-        #runCmd(["mv", root, destPath])
+            license = data["license"]
+            if (license.lower() == "creative_commons_by"):
+                doMove = True
+
+        if (doMove == True):
+            print("OK to move.")
+            runCmd(["mv", root, destPath])
+        else:
+            print("Not moved.")
 

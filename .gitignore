@@ -4,5 +4,6 @@ test/*
 temp/*
 input/*
 input_tilt/*
-assets
+assets/*
 assets_tilt/*
+assets_tilt_cc/*
