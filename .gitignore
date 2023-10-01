@@ -3,6 +3,7 @@
 test/*
 temp/*
 input/*
+reject/*
 input_tilt/*
 assets/*
 assets_tilt/*
@@ -12,4 +13,5 @@ data/*
 sketch/*
 thumbnail/*
 tilt/*
+rejects.txt
 
