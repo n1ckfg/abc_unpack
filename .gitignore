@@ -3,4 +3,8 @@
 test/*
 temp/*
 input/*
+output/*
+reject/*
+archive/*
+processed/*
 

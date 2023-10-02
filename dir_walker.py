@@ -1,11 +1,24 @@
 import os
 import sys
 import pymeshlab as ml
+import subprocess
+import json
 
 argv = sys.argv
 argv = argv[argv.index("--") + 1:] # get all args after "--"
 
 inputPath = argv[0]
+
+def runCmd(cmd):
+    returns = ""
+    try:
+        returns = subprocess.check_output(cmd, text=True)
+    except subprocess.CalledProcessError as e:
+        returns = f"Command failed with return code {e.returncode}"
+    print(returns)
+    return returns   
+
+#runCmd(["command", "arg1", "arg2"])
 
 def changeExtension(_url, _newExt):
     returns = ""
@@ -15,11 +28,32 @@ def changeExtension(_url, _newExt):
     returns += _newExt
     return returns
 
+objCounter = 0
+plyCounter = 0
+
 for root, dirs, files in os.walk(inputPath):
     for file in files:
         if (file.endswith("obj")):
-            inputUrl = os.path.join(inputPath, file)
+            objCounter += 1
+            print("Found " + str(objCounter) + " obj files.")
+
+for root, dirs, files in os.walk(inputPath):
+    for file in files:
+        if (file.endswith("obj")):
+            inputUrl = os.path.join(root, file)
             outputUrl = changeExtension(inputUrl, ".ply")
-            ms = ml.MeshSet()
-            ms.load_new_mesh(inputUrl)
-            ms.save_current_mesh(outputUrl)        
+
+            try:
+                ms = ml.MeshSet()
+                ms.load_new_mesh(inputUrl)
+                ms.save_current_mesh(outputUrl)  
+                runCmd(["mv", outputUrl, "../output"])
+                plyCounter += 1
+            except:
+                pass
+            
+            print("Processed " + str(plyCounter) + " / " + str(objCounter)  + " ply files.")
+
+            runCmd(["rm", inputUrl])
+
+print("Finished.")
