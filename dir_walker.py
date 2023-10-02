@@ -47,7 +47,7 @@ for root, dirs, files in os.walk(inputPath):
                 ms = ml.MeshSet()
                 ms.load_new_mesh(inputUrl)
                 ms.save_current_mesh(outputUrl)  
-                runCmd(["mv", outputUrl, "../output"])
+                runCmd(["mv", outputUrl, "../output/"])
                 plyCounter += 1
             except:
                 pass
