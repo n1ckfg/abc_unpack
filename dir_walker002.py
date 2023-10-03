@@ -44,7 +44,7 @@ for root, dirs, files in os.walk(inputPath):
             outputUrl = changeExtension(inputUrl, "_draco.glb")
 
             try:
-            	runCmd(["gltf-pipeline", "-i " + inputUrl, "-o " + outputUrl, "-d"])
+                runCmd(["gltf-pipeline", "-i " + inputUrl, "-o " + outputUrl, "-d"])
                 runCmd(["mv", outputUrl, "output/"])
                 dracoCounter += 1
             except:
