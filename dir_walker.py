@@ -1,6 +1,6 @@
 import os
 import sys
-import pymeshlab as ml
+import trimesh as tm
 import subprocess
 import json
 
@@ -29,7 +29,7 @@ def changeExtension(_url, _newExt):
     return returns
 
 objCounter = 0
-plyCounter = 0
+glbCounter = 0
 
 for root, dirs, files in os.walk(inputPath):
     for file in files:
@@ -41,18 +41,17 @@ for root, dirs, files in os.walk(inputPath):
     for file in files:
         if (file.endswith("obj")):
             inputUrl = os.path.join(root, file)
-            outputUrl = changeExtension(inputUrl, ".ply")
+            outputUrl = changeExtension(inputUrl, ".glb")
 
             try:
-                ms = ml.MeshSet()
-                ms.load_new_mesh(inputUrl)
-                ms.save_current_mesh(outputUrl)  
-                runCmd(["mv", outputUrl, "../output/"])
-                plyCounter += 1
+                mesh = tm.load_mesh(inputUrl)
+                mesh.export(outputUrl)  
+                runCmd(["mv", outputUrl, "output/"])
+                glbCounter += 1
             except:
                 pass
             
-            print("Processed " + str(plyCounter) + " / " + str(objCounter)  + " ply files.")
+            print("Processed " + str(glbCounter) + " / " + str(objCounter)  + " gltf files.")
 
             runCmd(["rm", inputUrl])
 
