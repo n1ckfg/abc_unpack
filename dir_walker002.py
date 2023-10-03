@@ -1,6 +1,5 @@
 import os
 import sys
-import trimesh as tm
 import subprocess
 import json
 
@@ -9,14 +8,14 @@ argv = argv[argv.index("--") + 1:] # get all args after "--"
 
 inputPath = argv[0]
 
-def runCmd(cmd):
+def runCmd(cmd, shell=False):
     returns = ""
     try:
-        returns = subprocess.check_output(cmd, text=True)
+        returns = subprocess.check_output(cmd, text=True, shell=shell)
     except subprocess.CalledProcessError as e:
         returns = f"Command failed with return code {e.returncode}"
     print(returns)
-    return returns   
+    return returns  
 
 #runCmd(["command", "arg1", "arg2"])
 
@@ -42,13 +41,16 @@ for root, dirs, files in os.walk(inputPath):
         if (file.endswith("glb")):
             inputUrl = os.path.join(root, file)
             outputUrl = changeExtension(inputUrl, "_draco.glb")
+            inputUrl = os.path.join(os.getcwd(), inputUrl)
+            outputUrl = os.path.join(os.getcwd(), outputUrl)
+            #print(inputUrl, outputUrl)
 
-            try:
-                runCmd(["gltf-pipeline", "-i " + inputUrl, "-o " + outputUrl, "-d"])
-                runCmd(["mv", outputUrl, "output/"])
-                dracoCounter += 1
-            except:
-                pass
+            #try:
+            runCmd("gltf-pipeline -i " + inputUrl + " -o " + outputUrl + " -d", True)
+            runCmd(["mv", outputUrl, "output/"])
+            dracoCounter += 1
+            #except Exception as error:
+                #print(error)
             
             print("Processed " + str(dracoCounter) + " / " + str(glbCounter)  + " gltf files.")
 

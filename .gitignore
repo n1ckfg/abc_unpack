@@ -7,4 +7,6 @@ output/*
 reject/*
 archive/*
 processed/*
-
+node_modules/*
+package.json
+package-lock.json
