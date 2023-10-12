@@ -51,7 +51,8 @@ for root, dirs, files in os.walk(inputPath):
             except:
                 pass
             
-            print("Processed " + str(glbCounter) + " / " + str(objCounter)  + " gltf files.")
+            print("Processed " + str(glbCounter) + " / " + str(objCounter)  
++ " obj -> gltf files.")
 
             runCmd(["rm", inputUrl])
 

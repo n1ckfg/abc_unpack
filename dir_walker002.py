@@ -34,7 +34,8 @@ for root, dirs, files in os.walk(inputPath):
     for file in files:
         if (file.endswith("glb")):
             glbCounter += 1
-            print("Found " + str(glbCounter) + " gltf files.")
+            print("Found " + str(glbCounter) + " gltf -> gltf 
+draco files.")
 
 for root, dirs, files in os.walk(inputPath):
     for file in files:
