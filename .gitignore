@@ -3,6 +3,7 @@
 test/*
 temp/*
 input/*
+output/*
 reject/*
 input_tilt/*
 assets/*
