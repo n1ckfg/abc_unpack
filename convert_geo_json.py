@@ -2,6 +2,7 @@ import os
 import sys
 import subprocess
 import json
+import bpy
 
 argv = sys.argv
 argv = argv[argv.index("--") + 1:] # get all args after "--"
@@ -40,25 +41,28 @@ for root, dirs, files in os.walk(inputPath):
     for file in files:
         if (file.endswith("zip")):
             inputUrl = os.path.join(root, file)
-            #outputUrl = changeExtension(inputUrl, "_draco.glb")
 
             runCmd(["unzip", inputUrl, "-d", "output"])
             
             outputUrl = inputUrl.replace("input", "output").replace(".zip", "")
-            
-
             #outputUrl = os.path.join(os.getcwd(), outputUrl)
-            #print(inputUrl, outputUrl)
 
-            #try:
             runCmd(["python2", "geometry_json_to_obj.py", outputUrl])
-            #runCmd(["mv", outputUrl, "output/"])
+            runCmd(["rm", outputUrl])
+
+            outputUrl2 = changeExtension(outputUrl, ".obj")
+            outputUrl3 = changeExtension(outputUrl, ".glb")
+            outputUrl4 = changeExtension(outputUrl, "_draco.glb")
+            
+            bpy.ops.wm.obj_import(filepath=outputUrl2)
+            bpy.ops.export_scene.gltf(filepath=outputUrl3, use_selection=True, export_draco_mesh_compression_enable=False)
+            bpy.ops.export_scene.gltf(filepath=outputUrl4, use_selection=True, export_draco_mesh_compression_enable=True)
+            #bpy.ops.object.delete()
+            bpy.ops.wm.read_homefile(app_template="") # reset the Blender scene to default, saves undo memory vs. delete
+            runCmd(["rm", outputUrl2])
+
             dracoCounter += 1
-            #except Exception as error:
-                #print(error)
             
             print("Processed " + str(dracoCounter) + " / " + str(jsonCounter)  + " json files.")
-
-            #runCmd(["rm", inputUrl])
 
 print("Finished.")
