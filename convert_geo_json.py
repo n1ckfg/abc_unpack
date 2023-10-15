@@ -55,10 +55,17 @@ for root, dirs, files in os.walk(inputPath):
             outputUrl4 = changeExtension(outputUrl, "_draco.glb")
             
             bpy.ops.wm.obj_import(filepath=outputUrl2)
-            bpy.ops.export_scene.gltf(filepath=outputUrl3, use_selection=True, export_draco_mesh_compression_enable=False)
-            #bpy.ops.export_scene.gltf(filepath=outputUrl4, use_selection=True, export_draco_mesh_compression_enable=True)
-            bpy.ops.wm.read_homefile(app_template="") # reset the Blender scene to default, saves undo memory vs. delete
-            runCmd("gltf-pipeline -i " + outputUrl3 + " -o " + outputUrl4 + " -d", True)
+
+            # 1. Blender: regular Gltf output
+            # 1.1
+            #bpy.ops.export_scene.gltf(filepath=outputUrl3, use_selection=True, export_draco_mesh_compression_enable=False)
+            # 1.2
+            #runCmd("gltf-pipeline -i " + outputUrl3 + " -o " + outputUrl4 + " -d", True)
+            
+            # 2. Blender: Draco Gltf output
+            bpy.ops.export_scene.gltf(filepath=outputUrl4, use_selection=True, export_draco_mesh_compression_enable=True)
+            
+            bpy.ops.wm.read_homefile(app_template="") # reset the Blender scene to default, saves undo memory vs. delete           
             runCmd(["rm", outputUrl2])
 
             dracoCounter += 1
