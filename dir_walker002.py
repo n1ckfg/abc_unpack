@@ -34,7 +34,7 @@ for root, dirs, files in os.walk(inputPath):
     for file in files:
         if (file.endswith("glb")):
             glbCounter += 1
-            print("Found " + str(glbCounter) + " gltf -> gltf draco files.")
+            print("Found " + str(glbCounter) + " gltf files.")
 
 for root, dirs, files in os.walk(inputPath):
     for file in files:
@@ -52,7 +52,7 @@ for root, dirs, files in os.walk(inputPath):
             #except Exception as error:
                 #print(error)
             
-            print("Processed " + str(dracoCounter) + " / " + str(glbCounter)  + " gltf files.")
+            print("Processed " + str(dracoCounter) + " / " + str(glbCounter)  + " gltf -> gltf draco files.")
 
             #runCmd(["rm", inputUrl])
 
