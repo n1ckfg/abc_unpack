@@ -72,16 +72,12 @@ if (appendWorkIds == True):
                 data = json.load(f)
                 newName = data["authorName"]
                 
-                for name in fullNameList:
-                    if (newName == name):
-                        name = name + ", " + file.split(".")[0]
+                for i in range(0, len(uniqueNameList)):
+                    if (newName == uniqueNameList[i]):
+                        uniqueNameList[i] += ", " + file.split(".")[0]
 
-    for name in fullNameList:
-        name += "\r"
-
-    f = open("tiltset_credits_full_" + fullLen + ".csv", "w")
-    f.writelines(fullNameList)
-    f.close()
+    for i in range(0, len(uniqueNameList)):
+        uniqueNameList[i] += "\r"
 
     f = open("tiltset_credits_unique_" + uniqueLen + ".csv", "w")
     f.writelines(uniqueNameList)
