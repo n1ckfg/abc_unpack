@@ -8,6 +8,8 @@ argv = argv[argv.index("--") + 1:] # get all args after "--"
 
 inputPath = argv[0]
 
+appendWorkIds = True
+
 def runCmd(cmd):
     returns = ""
     try:
@@ -35,7 +37,13 @@ for root, dirs, files in os.walk(inputPath):
         if (file.endswith("json")):
             f = open(os.path.join(root, file))
             data = json.load(f)
-            newName = data["authorName"] + "\r"
+            
+            if (appendWorkIds == True):
+                newName = data["authorName"]
+            else:
+                newName = data["authorName"] + "\r"
+            
+
             fullNameList.append(newName)
             
             addToUniqueList = True
@@ -56,10 +64,33 @@ uniqueLen = str(len(uniqueNameList))
 fullLen = str(len(fullNameList))
 print("Found " + uniqueLen + " unique names out of " + fullLen + " total names.")
 
-f = open("tiltset_credits_full_" + fullLen + ".txt", "w")
-f.writelines(fullNameList)
-f.close()
+if (appendWorkIds == True):
+    for root, dirs, files in os.walk(inputPath):
+        for file in files:
+            if (file.endswith("json")):
+                f = open(os.path.join(root, file))
+                data = json.load(f)
+                newName = data["authorName"]
+                
+                for name in fullNameList:
+                    if (newName == name):
+                        name = name + ", " + file.split(".")[0]
 
-f = open("tiltset_credits_unique_" + uniqueLen + ".txt", "w")
-f.writelines(uniqueNameList)
-f.close()
+    for name in fullNameList:
+        name += "\r"
+
+    f = open("tiltset_credits_full_" + fullLen + ".csv", "w")
+    f.writelines(fullNameList)
+    f.close()
+
+    f = open("tiltset_credits_unique_" + uniqueLen + ".csv", "w")
+    f.writelines(uniqueNameList)
+    f.close()
+else:
+    f = open("tiltset_credits_full_" + fullLen + ".txt", "w")
+    f.writelines(fullNameList)
+    f.close()
+
+    f = open("tiltset_credits_unique_" + uniqueLen + ".txt", "w")
+    f.writelines(uniqueNameList)
+    f.close()
