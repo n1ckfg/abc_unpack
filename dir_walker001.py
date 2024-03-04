@@ -1,13 +1,13 @@
 import os
 import sys
-import pymeshlab as ml
 import subprocess
+import json
+import cv2
 
 argv = sys.argv
 argv = argv[argv.index("--") + 1:] # get all args after "--"
 
 inputPath = argv[0]
-destPath = argv[1]
 
 def runCmd(cmd):
     returns = ""
@@ -28,19 +28,41 @@ def changeExtension(_url, _newExt):
     returns += _newExt
     return returns
 
-tiltdirs = []
+def find_centroid(image_path):
+    image = cv2.imread(image_path)
+    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-for root, dirs, files in os.walk(inputPath):
-    '''
-    for file in files:
-        if (file.endswith("obj")):
-            inputUrl = os.path.join(inputPath, file)
-            outputUrl = changeExtension(inputUrl, ".ply")
-            ms = ml.MeshSet()
-            ms.load_new_mesh(inputUrl)
-            ms.save_current_mesh(outputUrl)    
-    '''
-    if "TILT" in dirs:
-        print(root)
-        runCmd(["mv", root, destPath])
+    _, thresh = cv2.threshold(gray_image, 128, 255, cv2.THRESH_BINARY)
+    contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    if contours:
+        largest_contour = max(contours, key=cv2.contourArea)
+        moments = cv2.moments(largest_contour)
+        centroid_x = int(moments['m10'] / moments['m00'])
+        centroid_y = int(moments['m01'] / moments['m00'])
+        
+        return (centroid_x, centroid_y)
+    else:
+        print("No contours found.")
+        return None
+
+def main():
+    urls = []
+    for root, dirs, files in os.walk(inputPath):
+        for file in files:
+            url = os.path.join(root, file)
+            urls.append(url)
+    urls.sort()
+    print(urls)
+
+    centroids = []
+    for url in urls:
+        centroids.append(find_centroid(url))
+    print(centroids)
+
+if __name__ == "__main__":
+    main()
+
+
+
 
