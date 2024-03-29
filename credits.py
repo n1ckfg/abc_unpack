@@ -31,6 +31,7 @@ def changeExtension(_url, _newExt):
 
 fullNameList = []
 uniqueNameList = []
+uniqueNameListWithIds = []
 
 for root, dirs, files in os.walk(inputPath):
     for file in files:
@@ -56,13 +57,15 @@ for root, dirs, files in os.walk(inputPath):
             if (addToUniqueList == True):
                 if (data["license"].lower() == "creative_commons_by"):
                     uniqueNameList.append(newName)
+                    uniqueNameListWithIds.append(newName)
                 else:
                     print("Error: Wrong license info!")
 
 print("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~")
 uniqueLen = str(len(uniqueNameList))
+uniqueIdLen = str(len(uniqueNameListWithIds))
 fullLen = str(len(fullNameList))
-print("Found " + uniqueLen + " unique names out of " + fullLen + " total names.")
+print("Found " + uniqueLen + " (" + uniqueIdLen + ") " + "unique names out of " + fullLen + " total names.")
 
 if (appendWorkIds == True):
     for root, dirs, files in os.walk(inputPath):
@@ -74,19 +77,25 @@ if (appendWorkIds == True):
                 
                 for i in range(0, len(uniqueNameList)):
                     if (newName == uniqueNameList[i]):
-                        uniqueNameList[i] += ", " + file.split(".")[0]
+                        uniqueNameListWithIds[i] += ", " + file.split(".")[0]
 
-    for i in range(0, len(uniqueNameList)):
-        uniqueNameList[i] += "\r"
+    for i in range(0, len(uniqueNameListWithIds)):
+        uniqueNameListWithIds[i] += "\r"
 
-    f = open("tiltset_credits_unique_" + uniqueLen + ".csv", "w")
-    f.writelines(uniqueNameList)
-    f.close()
-else:
-    f = open("tiltset_credits_full_" + fullLen + ".txt", "w")
-    f.writelines(fullNameList)
+    f = open("tiltset_credits_unique_" + uniqueIdLen + ".csv", "w")
+    f.writelines(uniqueNameListWithIds)
     f.close()
 
-    f = open("tiltset_credits_unique_" + uniqueLen + ".txt", "w")
-    f.writelines(uniqueNameList)
-    f.close()
+for i in range(0, len(fullNameList)):
+    fullNameList[i] += "\r"
+
+f = open("tiltset_credits_full_" + fullLen + ".txt", "w")
+f.writelines(fullNameList)
+f.close()
+
+for i in range(0, len(uniqueNameList)):
+    uniqueNameList[i] += "\r"
+
+f = open("tiltset_credits_unique_" + uniqueLen + ".txt", "w")
+f.writelines(uniqueNameList)
+f.close()
