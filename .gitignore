@@ -17,5 +17,6 @@ tilt/*
 rejects.txt
 Resources/*
 3.6/*
-*.csv
+tiltset*.csv
+tiltset*.txt
 
