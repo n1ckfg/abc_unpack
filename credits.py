@@ -57,7 +57,7 @@ for root, dirs, files in os.walk(inputPath):
             if (addToUniqueList == True):
                 if (data["license"].lower() == "creative_commons_by"):
                     uniqueNameList.append(newName)
-                    uniqueNameListWithIds.append(newName)
+                    uniqueNameListWithIds.append(newName.replace(",", "_"))
                 else:
                     print("Error: Wrong license info!")
 
